@@ -1,0 +1,131 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    font-size: 1rem;
+    font-weight: 400;
+    color: #343a40;
+    font-family: sans-serif;
+    line-height: 1.15;
+}
+
+header {
+    text-align: center;
+    padding: 1em 0;
+}
+
+.title {
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.main-content {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    height: 100vh;
+}
+
+.left-section {
+    width: 30%;
+    margin-left: 100px;
+}
+
+.right-section {
+    width: 70%;
+}
+
+canvas {
+    border: 3px solid #343a40;
+    display: block;
+    margin: 0 auto;
+    width: 45vw;
+    height: 45vw;
+}
+
+.info {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.info p {
+    margin-bottom: 10px;
+}
+
+@media (min-width: 576px) {
+    .info {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 10px;
+    }
+}
+
+
+.speed-slider-container {
+    text-align: center;
+    width: 45vw;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.formula {
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.slider {
+    width: 45vw;
+    margin: 0 auto;
+}
+
+.info {
+    text-align: left;
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+/* Bootstrap grid classes for the .info content */
+.info p {
+    border: 1px solid #343a40;
+    padding: 5px;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+@media (min-width: 576px) {
+    .info {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 0px;
+    }
+}
+
+h2 {
+    text-align: center;
+}
+
+.back-button {
+    text-align: left;
+    margin-left: 50px;
+}
+
+.back-button a {
+    color: #343a40;
+    text-decoration: none; /* Remove the underline */
+
+}
+
+.back-button a:hover {
+    color: #ccc; /* Add a grey color on hover */
+}
+
+/*Make header stack horizontal*/
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+

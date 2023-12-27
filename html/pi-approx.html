@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/pi-approx.css">
+    <script src="assets/js/pi-approx.js" defer></script>
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <title>Area of Pi</title>
+</head>
+<body>
+    <header>
+        <p class="back-button"><a href="index.html">Back</a></p>
+        <h1 class="title">Pi Approximation</h1>
+    </header>
+    <section class="main-content">
+        <div class="left-section">
+            <div class="info">
+                <p>Pi estimation:</p> <p id="piEstimation"></p>
+                <p>Actual value of pi:</p> <p id="actualPi"></p>
+                <p>Standard error:</p> <p id="standardError"></p>
+                <p>Points in Square:</p> <p id="totalPoints"></p>
+                <p>Points in Circle:</p> <p id="pointsInCircle"></p>
+            </div>
+            <h2>How does it work</h2>
+            <p>Consider the image of the circle inscribed in the square shown on the right. The area of the circle is:</p>
+            <p class="formula">\(A^{\circ} = \pi r^2\)</p>
+            <p>Note that one side of the square is equal to the diameter of the circle, which is \(2r\). Therefore, the area of the square is:</p>
+            <p class="formula">\(A^{\square} = (2r)^2 = 4r^2\)</p>
+            <p>If we randomly generate points inside the square, the probability of a point being inside the circle is equal to the ratio of the area of the circle to the area of the square:</p>
+            <p class="formula">\(\frac{A^{\circ}}{A^{\square}} = \frac{\pi r^2}{4r^2} = \frac{\pi}{4} \approx \frac{\text{points in circle}}{\text{points in square}}\)</p>
+            <p>Therefore, we can estimate pi with the following formula:</p>
+            <p class="formula">\(\pi \approx 4 \cdot \frac{\text{points in circle}}{\text{total points}}\)</p>
+            <h2>Standard Error</h2>
+            <p>The standard error is the standard deviation of the sampling distribution of a statistic. In this case, the statistic is the estimation of pi. The standard error is calculated with the following formula:</p>
+            <p class="formula">\(SE = 4 \cdot \sqrt{\frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n(n-1)}}\)</p>
+            <p>where \(x_i\) is \(0\) or \(1\) depending on whether the point is inside the circle or not, \(\bar{x}\) is the percentage of points inside the circle, and \(n\) is the total number of points.</p>
+        </div>
+        <div class="right-section">
+            <canvas id="visualizationCanvas" width="500" height="500"></canvas>
+            <p style="text-align: center;">Speed:</p>
+            <div class="speed-slider-container">
+                <label for="speedSlider"></label><input type="range" min="1" max="200" value="1" class="slider" id="speedSlider">
+            </div>
+        </div>
+    </section>
+    <script type="text/x-mathjax-config">
+       MathJax.Hub.Config({
+          tex2jax: {
+             inlineMath: [['$', '$'], ['\\(', '\\)']],
+             displayMath: [['$$', '$$'], ['\\[', '\\]']],
+             processEscapes: true
+          },
+          CommonHTML: { linebreaks: { automatic: true } },
+          "HTML-CSS": { linebreaks: { automatic: true } },
+          SVG: { linebreaks: { automatic: true } }
+       });
+    </script>
+</body>
+</html>
