@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVD Image Compression Demo</title>
+    <script src="https://unpkg.com/svd-js" type="application/javascript"></script>
+</head>
+<body>
+
+    <h1>SVD Image Compression Demo</h1>
+
+    <!-- Input Image -->
+    <input type="file" id="inputImageFile" accept="image/*">
+    <img id="inputImage" style="max-width: 100%; margin-top: 10px;" alt="Input Image">
+
+    <!-- Compressed Image -->
+    <h2>Compressed Image</h2>
+    <canvas id="canvas" style="max-width: 100%; border: 1px solid #ccc;"></canvas>
+    <canvas id="compressedCanvas" style="max-width: 100%; border: 1px solid #ccc;"></canvas>
+
+
+    <script>
+     function matrix_multiplication(A, B) {
+      let result = [];
+      for (let i = 0; i < A.length; i++) {
+            result[i] = [];
+            for (let j = 0; j < B[0].length; j++) {
+             let sum = 0;
+             for (let k = 0; k < A[0].length; k++) {
+                 sum += A[i][k] * B[k][j];
+              }
+              result[i][j] = sum;
+            }
+         }
+         return result;
+     }
+
+     function transpose(A) {
+         let result = [];
+         for (let i = 0; i < A[0].length; i++) {
+             result[i] = [];
+             for (let j = 0; j < A.length; j++) {
+                 result[i][j] = A[j][i];
+             }
+         }
+         return result;
+     }
+
+     function diagonalize_vector(v) {
+         let result = [];
+         for (let i = 0; i < v.length; i++) {
+             result[i] = [];
+             for (let j = 0; j < v.length; j++) {
+                 result[i][j] = 0;
+             }
+             result[i][i] = v[i];
+         }
+         return result;
+     }
+
+     function reorder(u, v, q) {
+         // make q in descending order and reorder u and v accordingly
+         u = transpose(u)
+         v = transpose(v)
+         let q2 = [];
+         let u2 = [];
+         let v2 = [];
+         while (q.length > 0) {
+             // find max
+             let max = q[0];
+             let maxIndex = 0;
+             for (let i = 1; i < q.length; i++) {
+                 if (q[i] > max) {
+                     max = q[i];
+                     maxIndex = i;
+                 }
+             }
+             // add max to q2
+             q2.push(max);
+             // remove max from q
+             q.splice(maxIndex, 1);
+             // add corresponding column of u to u2
+             u2.push(u[maxIndex]);
+             u.splice(maxIndex, 1);
+             // add corresponding column of v to v2
+             v2.push(v[maxIndex]);
+             v.splice(maxIndex, 1);
+         }
+
+
+         return [transpose(u2), transpose(v2), q2];
+     }
+
+
+     canvas = document.getElementById("canvas");
+     ctx = canvas.getContext("2d");
+     // load image
+     const image = new Image();
+     image.src = "assets/imgs/avatar.jpg";
+     image.onload = function() {
+         // draw image on canvas
+         canvas.width = image.width;
+         canvas.height = image.height;
+         ctx.drawImage(image, 0, 0);
+         // get image data
+         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+         const data = imageData.data;
+        // get red, green, blue, and alpha values
+        let red = [];
+        let green = [];
+        let blue = [];
+        let alpha = [];
+
+        for (let i = 0; i < data.length; i += 4) {
+            red.push(data[i]/255);
+            green.push(data[i + 1]/255);
+            blue.push(data[i + 2]/255);
+            alpha.push(data[i + 3]);
+        }
+
+        // convert each to mxn matrix
+        let red_matrix = [];
+        let green_matrix = [];
+        let blue_matrix = [];
+
+        for (let i = 0; i < canvas.height; i++) {
+            red_matrix[i] = [];
+            green_matrix[i] = [];
+            blue_matrix[i] = [];
+            for (let j = 0; j < canvas.width; j++) {
+                red_matrix[i][j] = red[i * canvas.width + j];
+                green_matrix[i][j] = green[i * canvas.width + j];
+                blue_matrix[i][j] = blue[i * canvas.width + j];
+            }
+        }
+
+        // if m < n, transpose each matrix
+        if (red_matrix.length < red_matrix[0].length) {
+            red_matrix = transpose(red_matrix);
+            green_matrix = transpose(green_matrix);
+            blue_matrix = transpose(blue_matrix);
+        }
+
+        // apply SVD to each matrix
+        const red_svd = SVDJS.SVD(red_matrix);
+        const green_svd = SVDJS.SVD(green_matrix);
+        const blue_svd = SVDJS.SVD(blue_matrix);
+
+        // reorder each matrix
+        [red_u, red_v, red_q] = reorder(red_svd.u, red_svd.v, red_svd.q);
+        [green_u, green_v, green_q] = reorder(green_svd.u, green_svd.v, green_svd.q);
+        [blue_u, blue_v, blue_q] = reorder(blue_svd.u, blue_svd.v, blue_svd.q);
+
+        // get k
+         console.log("singular values: ", red_q.length);
+        let k = 600;
+        console.log("k: ", k);
+
+        // get u_k
+        let red_u_k = red_u.slice(0, red_u.length).map(row => row.slice(0, k));
+        let green_u_k = green_u.slice(0, green_u.length).map(row => row.slice(0, k));
+        let blue_u_k = blue_u.slice(0, blue_u.length).map(row => row.slice(0, k));
+
+        // get q_k
+        let red_q_k = red_q.slice(0, k);
+        let green_q_k = green_q.slice(0, k);
+        let blue_q_k = blue_q.slice(0, k);
+
+        // get v_k
+        let red_v_k = red_v.slice(0, red_v.length).map(row => row.slice(0, k));
+        let green_v_k = green_v.slice(0, green_v.length).map(row => row.slice(0, k));
+        let blue_v_k = blue_v.slice(0, blue_v.length).map(row => row.slice(0, k));
+
+        // get A_k
+        let red_A_k = matrix_multiplication(matrix_multiplication(red_u_k, diagonalize_vector(red_q_k)), transpose(red_v_k));
+        let green_A_k = matrix_multiplication(matrix_multiplication(green_u_k, diagonalize_vector(green_q_k)), transpose(green_v_k));
+        let blue_A_k = matrix_multiplication(matrix_multiplication(blue_u_k, diagonalize_vector(blue_q_k)), transpose(blue_v_k));
+
+        // convert to 0-255
+        for (let i = 0; i < red_A_k.length; i++) {
+            for (let j = 0; j < red_A_k[0].length; j++) {
+                red_A_k[i][j] = Math.round(red_A_k[i][j] * 255);
+                green_A_k[i][j] = Math.round(green_A_k[i][j] * 255);
+                blue_A_k[i][j] = Math.round(blue_A_k[i][j] * 255);
+            }
+        }
+
+        // convert to 1D array
+         let A_k_1d = [];
+        for (let i = 0; i < red_A_k.length; i++) {
+            for (let j = 0; j < red_A_k[0].length; j++) {
+                A_k_1d.push(red_A_k[i][j]);
+                A_k_1d.push(green_A_k[i][j]);
+                A_k_1d.push(blue_A_k[i][j]);
+                A_k_1d.push(255);
+            }
+        }
+
+        // convert to Uint8ClampedArray
+        let A_k_1d_u8 = new Uint8ClampedArray(A_k_1d);
+        // convert to ImageData
+        let imageData_k = new ImageData(A_k_1d_u8, canvas.width, canvas.height);
+        // draw image on canvas
+        compressedCanvas = document.getElementById("compressedCanvas");
+        compressedCtx = compressedCanvas.getContext("2d");
+        compressedCanvas.width = canvas.width;
+        compressedCanvas.height = canvas.height;
+        compressedCtx.putImageData(imageData_k, 0, 0);
+     }
+
+    </script>
+
+</body>
+</html>

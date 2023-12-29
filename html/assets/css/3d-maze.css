@@ -1,7 +1,123 @@
-canvas {
-    border: 3px solid #343a40;
-    display: block;
-    margin: 0 auto;
-    width: 80%;
-    height: 80%;
+body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    font-size: 1rem;
+    font-weight: 400;
+    color: #343a40;
+    font-family: sans-serif;
+    line-height: 1.15;
+}
+
+
+#game-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#miniMap {
+    width: 30vw;
+    height: 30vw;
+}
+
+#gameCanvas {
+    width: 60vw;
+    height: 30vw;
+    margin: 1vw;
+}
+
+.back-button {
+    text-align: left;
+    margin-left: 50px;
+}
+
+.back-button a {
+    color: #343a40;
+    text-decoration: none; /* Remove the underline */
+
+}
+
+.back-button a:hover {
+    color: #ccc; /* Add a grey color on hover */
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    padding: 1em 0;
+}
+
+h2 {
+    text-align: center;
+}
+
+
+.title {
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+#controls {
+    margin-left: 4vw;
+    font-size: 1.5vw;
+}
+
+#hideMap {
+    position: absolute;
+    top: 1vw;
+    right: 5vw;
+    font-size: 1.5vw;
+}
+
+#mapSelectLabel {
+    position: absolute;
+    top: 1.5vw;
+    right: 22vw;
+    font-size: 1vw;
+}
+
+
+#mapSelect {
+    position: absolute;
+    top: 1vw;
+    right: 15vw;
+    font-size: 1.5vw;
+}
+
+#2d-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#blank {
+    height: 38.39px;
+}
+
+
+
+#3d-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#slider-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#numLines {
+    width: 50vw;
 }

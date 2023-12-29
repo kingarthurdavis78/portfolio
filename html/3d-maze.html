@@ -5,9 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Maze</title>
     <link rel="stylesheet" href="assets/css/3d-maze.css">
-    <script src="assets/js/3d-maze.js" defer></script>
+    <script type="application/javascript" src="assets/js/3d-maze.js" defer></script>
 </head>
 <body>
-    <canvas id="gameCanvas" width="1280" height="720"></canvas>
+<header>
+    <p class="back-button"><a href="index.html">Back</a></p>
+    <h1 class="title">3D Maze</h1>
+    <label for="mapSelect" id="mapSelectLabel">Select Map: </label>
+        <select id="mapSelect" onchange="changeMap()">
+            <option value="1">maze</option>
+            <option value="2">rainbow</option>
+            <option value="3">hello</option>
+        </select>
+    <button id="hideMap" onclick="hideMiniMap()">Hide 2D Map</button>
+</header>
+    <div id="game-container">
+        <div id="2d-container">
+            <canvas id="miniMap"></canvas>
+            <div id="blank"></div>
+        </div>
+        <div id="3d-container">
+            <canvas id="gameCanvas"></canvas>
+            <div id="slider-container">
+                <label for="numLines" id="numLinesLabel">Number of Rays: 16</label>
+                <input type="range" id="numLines" min="2" max="10" value="4" onchange="NUMLINES = Math.pow(2, this.value); changeLabel(Math.pow(2, this.value))">
+            </div>
+        </div>
+    </div>
+    <div id="controls">
+        <h3>Controls</h3>
+        <p> Move: W, A, S, D</p>
+        <p> Rotate: Left and Right Arrow Keys</p>
+    </div>
+</div>
 </body>
 </html>
