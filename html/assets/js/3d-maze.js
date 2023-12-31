@@ -1,5 +1,7 @@
 const canvas_3d = document.getElementById('gameCanvas');
 const ctx_3d = canvas_3d.getContext('2d');
+canvas_3d.width = 1024;
+canvas_3d.height = 512;
 const width_3d = canvas_3d.width;
 const height_3d = canvas_3d.height;
 
@@ -112,14 +114,34 @@ function raycast(x, y, angle, map) {
 
 }
 
+function optimized_raycast(x, y, angle, map) {
+    let count = 0;
+    while (in_bounds(x, y) && count < 120) {
+        let color = touching(x, y, map);
+        if (color) {
+            while (touching(x, y, map)) {
+                // move backward slightly until not touching wall
+                x -= Math.cos(angle) / 4;
+                y -= Math.sin(angle) / (4 * STRETCH);
+            }
+            return [[x, y], color];
+        }
+        // move forward
+        x += Math.cos(angle);
+        y += Math.sin(angle) / STRETCH;
+        count++;
+    }
+    return [[x, y], [255, 255, 255]];
+}
+
 function norm(x1, y1, x2, y2) {
     return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 }
 
 function darken(color, distance) {
-    let r = color[0] - distance * STRETCH * 2;
-    let g = color[1] - distance * STRETCH * 2;
-    let b = color[2] - distance * STRETCH * 2;
+    let r = color[0] - distance * STRETCH * 2.5;
+    let g = color[1] - distance * STRETCH * 2.5;
+    let b = color[2] - distance * STRETCH * 2.5;
     if (r < 0) {
         r = 0;
     }
@@ -135,7 +157,7 @@ function darken(color, distance) {
 function draw_vision(map) {
     let angle = player.angle - Math.PI / 4;
     for (let i = 0; i < NUMLINES; i++) {
-        let [endpoint, color] = raycast(player.x, player.y, angle, map);
+        let [endpoint, color] = optimized_raycast(player.x, player.y, angle, map)
         draw_line(player.x, player.y, endpoint[0], endpoint[1], 255, 255, 255, ctx_2d)
         angle += Math.PI / (2 * NUMLINES);
 
@@ -147,7 +169,7 @@ function draw_vision(map) {
         color = darken(color, distance);
 
         let height = height_3d / distance * 6;
-        let width = width_3d / NUMLINES;
+        let width = Math.round(width_3d / NUMLINES)
         let x = i * width;
         let y = height_3d / 2 - height / 2
 
@@ -241,10 +263,13 @@ function step() {
         return;
     }
     // clear canvas
-    ctx_3d.fillStyle = 'black';
-    ctx_3d.fillRect(0, 0, width_3d, height_3d);
+    ctx_2d.clearRect(0, 0, canvas_2d.width, canvas_2d.height);
+    ctx_3d.clearRect(0, 0, canvas_3d.width, canvas_3d.height);
+    // fill background black
     ctx_2d.fillStyle = 'black';
     ctx_2d.fillRect(0, 0, width_2d, height_2d);
+    ctx_3d.fillStyle = 'black';
+    ctx_3d.fillRect(0, 0, width_3d, height_3d);
 
 
     // move player
@@ -334,5 +359,15 @@ function changeLabel(val) {
     label.innerHTML = "Number of Rays: " + val;
 }
 
+function toggleFullScreen() {
+    let elem = document.getElementById('gameCanvas');
+    if (!document.fullscreenElement) {
+        elem.requestFullscreen().catch(err => {
+            alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+        });
+    } else {
+        document.exitFullscreen();
+    }
+}
 
 

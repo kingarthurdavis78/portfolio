@@ -1,0 +1,81 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    font-size: 1rem;
+    font-weight: 400;
+    color: #343a40;
+    font-family: sans-serif;
+    line-height: 1.15;
+}
+
+.back-button {
+    text-align: left;
+    margin-left: 50px;
+}
+
+.back-button a {
+    color: #343a40;
+    text-decoration: none; /* Remove the underline */
+
+}
+
+.back-button a:hover {
+    color: #ccc; /* Add a grey color on hover */
+}
+
+.title {
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    padding: 1em 0;
+}
+
+#imageContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+canvas {
+    margin: 1vw;
+}
+
+div {
+    text-align: center;
+}
+
+#singularValueSlider {
+    width: 50%;
+}
+
+.slider-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#inputImageFile {
+    background: #343a40;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 50px;
+}
+
+#originalImageContainer {
+}
+
+#compressedImageContainer {
+
+}

@@ -26,17 +26,26 @@
         </div>
         <div id="3d-container">
             <canvas id="gameCanvas"></canvas>
-            <div id="slider-container">
-                <label for="numLines" id="numLinesLabel">Number of Rays: 16</label>
-                <input type="range" id="numLines" min="2" max="10" value="4" onchange="NUMLINES = Math.pow(2, this.value); changeLabel(Math.pow(2, this.value))">
+            <div id="belowGame">
+                <div id="slider-container">
+                    <label for="numLines" id="numLinesLabel">Number of Rays: 16</label>
+                    <input type="range" id="numLines" min="2" max="10" value="4" onchange="NUMLINES = Math.pow(2, this.value); changeLabel(Math.pow(2, this.value))">
+                </div>
+                <button id="fullscreen" onclick="toggleFullScreen()">Fullscreen</button>
             </div>
         </div>
     </div>
-    <div id="controls">
-        <h3>Controls</h3>
-        <p> Move: W, A, S, D</p>
-        <p> Rotate: Left and Right Arrow Keys</p>
-    </div>
+    <div id="info">
+        <div id="controls">
+            <h3>Controls</h3>
+            <p> Move: W, A, S, D</p>
+            <p> Rotate: Left and Right Arrow Keys</p>
+        </div>
+        <div id="howItWorks">
+            <h3 id="howItWorksTitle">How It Works</h3>
+            <p> The 2D map on the left is rendered using data from a JSON file containing the player's starting position, and the details of each wall (location, size, color). The 3D map on the right is rendered using ray-casting. Imaginary rays are cast from the player's position in a 90 degree fan. The distance to the first wall that each ray intersects with is inversely proportional to height of the corresponding column on the right screen (the shorter distance, the taller the column and visa-versa). The color of each column is determined by the color of the wall that the ray intersects with and is darkened the further away the wall is from the player. This technique creates a 3D-like effect, providing a visual representation of the maze.</p>
+        </div>
+
 </div>
 </body>
 </html>

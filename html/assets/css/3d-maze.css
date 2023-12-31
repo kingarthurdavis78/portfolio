@@ -67,6 +67,7 @@ h2 {
 #controls {
     margin-left: 4vw;
     font-size: 1.5vw;
+    flex: 1;
 }
 
 #hideMap {
@@ -120,4 +121,38 @@ h2 {
 
 #numLines {
     width: 50vw;
+}
+
+#belowGame {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#fullscreen {
+    margin-left: 1vw;
+    font-size: 1vw;
+}
+
+#info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#howItWorks {
+    margin-left: 1vw;
+    font-size: 1vw;
+    flex: 2;
+}
+
+p {
+    margin-right: 6vw;
+}
+
+#howItWorksTitle {
+    margin-right: 6vw;
+    text-align: center;
 }
