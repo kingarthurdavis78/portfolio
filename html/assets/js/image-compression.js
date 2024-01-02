@@ -95,7 +95,7 @@ function loadingScreen(ctx) {
 
 }
 
-function load_image() {
+function load_image(img = null) {
     // show loading screen
     let canvas = document.getElementById("canvas");
     canvas.width = 300;
@@ -112,11 +112,16 @@ function load_image() {
     // max width and height of image are the window width and height
     const MAX_WIDTH = window.innerWidth / 2;
     const MAX_HEIGHT = window.innerHeight / 2;
-
-    const input = document.getElementById("inputImageFile");
-    const imageFile = input.files[0];
     const image = new Image();
-    image.src = URL.createObjectURL(imageFile);
+
+    if (img == null) {
+        const input = document.getElementById("inputImageFile");
+        const imageFile = input.files[0];
+        image.src = URL.createObjectURL(imageFile);
+    }
+    else {
+        image.src = img;
+    }
     image.onload = function() {
         // rescale image if necessary
         if (image.width > MAX_WIDTH) {
@@ -164,7 +169,6 @@ function load_image() {
                 blue_matrix[i][j] = blue[i * canvas.width + j];
             }
         }
-        console.log(canvas.height * canvas.width);
         // if m < n, transpose each matrix
         if (canvas.height < canvas.width) {
             red_matrix = transpose(red_matrix);
@@ -194,13 +198,13 @@ function load_image() {
 
         // update image size calculation
         let imageSize = document.getElementById("imageSize");
-        imageSize.innerHTML = "Size: " + (data.length / 4);
+        imageSize.innerHTML = "Stored Values: " + (data.length / 4);
 
 
         // update slider so max is number of singular values
         let slider = document.getElementById("singularValueSlider");
-        slider.max = Math.floor(red_q.length / 2)
-        slider.value = Math.floor(red_q.length / 2);
+        slider.max = Math.floor(red_q.length / 2);
+        slider.value = Math.floor(red_q.length / 2) / 10;
         // update label for singular value slider
         let sliderLabel = document.getElementById("sliderLabel");
         sliderLabel.innerHTML = "Singular Values: " + slider.value;
@@ -242,8 +246,7 @@ function image_compression() {
 
     // update image size calculation
     let imageSize = document.getElementById("compressedImageSize");
-    console.log(compressedCanvas.height);
-    imageSize.innerHTML = "Size: " + (k * (compressedCanvas.height + compressedCanvas.width + 1));
+    imageSize.innerHTML = "Stored Values: " + (k * (compressedCanvas.height + compressedCanvas.width + 1));
 
     // get A_k
     let red_A_k = matrix_multiplication(matrix_multiplication(red_u_k, diagonalize_vector(red_q_k)), transpose(red_v_k));
@@ -276,3 +279,7 @@ function image_compression() {
     // draw image on canvas
     compressedCtx.putImageData(imageData_k, 0, 0);
 }
+
+
+//load cougar image
+load_image("assets/imgs/cougar.jpg");

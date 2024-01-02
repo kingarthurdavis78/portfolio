@@ -73,9 +73,22 @@ div {
     margin: 50px;
 }
 
-#originalImageContainer {
+h3 {
+    margin-left: 3vw;
+    margin-right: 3vw;
+    text-align: center;
 }
 
-#compressedImageContainer {
+p {
+    margin-left: 3vw;
+    margin-right: 3vw;
+}
 
+.size {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.formula {
+    text-align: center;
 }

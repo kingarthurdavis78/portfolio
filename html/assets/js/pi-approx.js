@@ -3,17 +3,19 @@
 let canvas = document.getElementById("visualizationCanvas");
 console.log(canvas);
 let ctx = canvas.getContext("2d");
+canvas.width = 1000;
+canvas.height = 1000;
 let width = canvas.width;
 let height = canvas.height;
 let radius = width / 2;
 let centerX = width / 2;
 let centerY = height / 2;
 
-// Make canvas white
+// Make canvas black
 ctx.fillStyle = "white";
 ctx.fillRect(0, 0, width, height);
 
-// draw x and y axis in black
+// draw x and y axis in white
 ctx.fillStyle = "black";
 ctx.fillRect(0, centerY, width, 1);
 ctx.fillRect(centerX, 0, 1, height);
@@ -31,7 +33,7 @@ let POINTS_IN_CIRCLE = 0;
 
 function drawPoint(x, y, color) {
     ctx.fillStyle = color;
-    ctx.fillRect(x, y, 1, 1);
+    ctx.fillRect(x, y, 2, 2);
 }
 async function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -48,7 +50,7 @@ function standard_error() {
     return 4 * Math.sqrt(sum / ((TOTAL_POINTS - 1) * (TOTAL_POINTS)));
 }
 
-let pts_per_ms = 1;
+let pts_per_ms = 10;
 
 let speedSlider = document.getElementById("speedSlider");
 

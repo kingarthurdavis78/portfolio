@@ -22,7 +22,7 @@
                 <p>Points in Square:</p> <p id="totalPoints"></p>
                 <p>Points in Circle:</p> <p id="pointsInCircle"></p>
             </div>
-            <h2>How does it work</h2>
+            <h2>How does it work?</h2>
             <p>Consider the image of the circle inscribed in the square shown on the right. The area of the circle is:</p>
             <p class="formula">\(A^{\circ} = \pi r^2\)</p>
             <p>Note that one side of the square is equal to the diameter of the circle, which is \(2r\). Therefore, the area of the square is:</p>
@@ -31,16 +31,14 @@
             <p class="formula">\(\frac{A^{\circ}}{A^{\square}} = \frac{\pi r^2}{4r^2} = \frac{\pi}{4} \approx \frac{\text{points in circle}}{\text{points in square}}\)</p>
             <p>Therefore, we can estimate pi with the following formula:</p>
             <p class="formula">\(\pi \approx 4 \cdot \frac{\text{points in circle}}{\text{total points}}\)</p>
-            <h2>Standard Error</h2>
-            <p>The standard error is the standard deviation of the sampling distribution of a statistic. In this case, the statistic is the estimation of pi. The standard error is calculated with the following formula:</p>
-            <p class="formula">\(SE = 4 \cdot \sqrt{\frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n(n-1)}}\)</p>
-            <p>where \(x_i\) is \(0\) or \(1\) depending on whether the point is inside the circle or not, \(\bar{x}\) is the percentage of points inside the circle, and \(n\) is the total number of points.</p>
+            <h2>Why is this important?</h2>
+            <p> This is not about the end result, but rather the process. This is a great example of how we can use randomness to calculate non-random values. This method is called Monte Carlo integration, and it is used in many fields, such as physics, finance, and machine learning. It is so widely used because it generalizes to higher dimensions, meaning that we can use this method to estimate hyper-volumes of higher dimensional shapes. Using traditional methods, this would be very difficult to do.</p>
         </div>
         <div class="right-section">
             <canvas id="visualizationCanvas" width="500" height="500"></canvas>
             <p style="text-align: center;">Speed:</p>
             <div class="speed-slider-container">
-                <label for="speedSlider"></label><input type="range" min="1" max="200" value="1" class="slider" id="speedSlider">
+                <label for="speedSlider"></label><input type="range" min="1" max="200" value="100" class="slider" id="speedSlider">
             </div>
         </div>
     </section>

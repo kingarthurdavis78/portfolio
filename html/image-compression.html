@@ -6,6 +6,7 @@
     <title>SVD Image Compression Demo</title>
     <script src="https://unpkg.com/svd-js" type="application/javascript"></script>
     <script src="assets/js/image-compression.js" type="application/javascript" defer></script>
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="stylesheet" href="assets/css/image-compression.css">
 </head>
 <body>
@@ -15,16 +16,15 @@
         <input type="file" id="inputImageFile" accept="image/*" onchange="load_image()">
     </header>
 
-
     <div id="imageContainer">
         <div id="originalImageContainer">
             <h2>Original Image</h2>
-            <p id="imageSize"></p>
+            <p class="size" id="imageSize"></p>
             <canvas id="canvas"></canvas>
         </div>
         <div id="compressedImageContainer">
             <h2>Compressed Image</h2>
-            <p id="compressedImageSize"></p>
+            <p class="size" id="compressedImageSize"></p>
             <canvas id="compressedCanvas"></canvas>
         </div>
     </div>
@@ -32,10 +32,34 @@
     <!-- Singular Value Slider -->
     <div class="slider-container">
         <p id="sliderLabel">Singular Values: ALL</p>
-        <input type="range" min="1" max="100" value="100" class="slider" id="singularValueSlider" onchange="image_compression()">
+        <input type="range" min="1" max="100" value="5" class="slider" id="singularValueSlider" onchange="image_compression()">
     </div>
 
-
+    <h3>How does it work?</h3>
+    <p>Every image can be represented as a matrix of pixels. For example, a greyscale image can be represented as a matrix of values between 0 and 255, where 0 represents a black pixel and 255 represents a white pixel. If the image is colored, then it can be represented by 3 matrices, one for each color channel (red, green, and blue).</p>
+    <p>For simplicity, let \(A\) be an \(m \times n\) matrix of rank \(r\) that represents a greyscale image. Using singular value decomposition, we can decompose \(A\) into the product of three matrices:</p>
+    <p class="formula">\(A = U \Sigma V^T\)</p>
+    <p>where \(U\) is an \(m \times r\) orthonormal matrix, \(\Sigma\) is an \(r \times r\) diagonal matrix, and \(V\) is an \(n \times r\) orthonormal matrix. The diagonal entries of \(\Sigma\) are called the singular values of \(A\). The singular values are ordered from largest to smallest.</p>
+    <p> We can approximate \(A\) by truncating the singular value decomposition to only include the \(k\) largest singular values:</p>
+    <p class="formula">\(A \approx U_k \Sigma_k V_k^T\)</p>
+    <p>where \(U_k\) is an \(m \times k\) orthonormal matrix, \(\Sigma_k\) is an \(k \times k\) diagonal matrix, and \(V_k\) is an \(n \times k\) orthonormal matrix. The diagonal entries of \(\Sigma_k\) are the \(k\) largest singular values of \(A\).</p>
+    <p>According to the Eckart-Young-Mirsky theorem, the truncated singular value decomposition is the best rank-\(k\) approximation of \(A\) in terms of the Frobenius norm.</p>
+    <h3>Storage Space</h3>
+    <p>Since the singular values are ordered from largest to smallest, the approximation will be better as \(k\) increases. However, the approximation will also require more storage space as \(k\) increases.</p>
+    <p>For example, if we have an \(m \times n\) matrix of rank \(r\), then the original matrix requires \(mn\) values to store. However, we can store the truncated singular value decomposition using \(k(m + n + 1)\) values. This is because we need \(k\) values to store the singular values, \(km\) values to store the entries of \(U_k\), and \(kn\) values to store the entries of \(V_k\).</p>
+    <p>Therefore, we can compress the image by storing the truncated singular value decomposition instead of the original matrix.</p>
+    <script type="text/x-mathjax-config">
+       MathJax.Hub.Config({
+          tex2jax: {
+             inlineMath: [['$', '$'], ['\\(', '\\)']],
+             displayMath: [['$$', '$$'], ['\\[', '\\]']],
+             processEscapes: true
+          },
+          CommonHTML: { linebreaks: { automatic: true } },
+          "HTML-CSS": { linebreaks: { automatic: true } },
+          SVG: { linebreaks: { automatic: true } }
+       });
+    </script>
 
 </body>
 </html>
