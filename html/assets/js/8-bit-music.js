@@ -91,69 +91,103 @@ function max_freq(magnitudes) {
     return max_index;
 }
 
-function generate_zeros(len) {
-    let res = [];
-    for (let i = 0; i < len; i++) {
-        res.push(math.complex(0, 0));
-    }
-    return res;
-}
+
 
 function pitch_shift(sample, new_freq) {
     let result = math.fft(sample);
-    let len = result.length;
+    result = result.splice(0, result.length / 2);
 
     // find the frequency of the result
     let magnitudes = get_magnitudes(result);
     let freq = max_freq(magnitudes);
-    console.log(freq);
 
     if (freq === new_freq) {
         return sample;
     }
 
     if (freq < new_freq) {
-        // insert zeros at beginning
-        let zeros = generate_zeros(new_freq - freq);
-        result = zeros.concat(result);
-        // preserve length
-        result = result.slice(0, len);
+        // squish up
 
     }
     else if (freq > new_freq) {
-        // remove beginning
-        result = result.slice(freq - new_freq);
-        // fill end with zeros preserve length
-        result = result.concat(generate_zeros(len - result.length));
+        // shift down
     }
+
+    // mirror the result and concat
+    result = result.concat(result.slice().reverse());
+
+    // plot the result
+    let freqs = [];
+    for (let i = 0; i < result.length; i++) {
+        freqs.push(i);
+    }
+    let SINE = document.getElementById('new_sine');
+    Plotly.newPlot( SINE, [{
+    type: 'scatter',
+    x: freqs,
+    y: get_magnitudes(result),
+    marker: {         // marker is an object, valid marker keys: #scatter-marker
+                color: 'rgb(16, 32, 77)' // more about "marker.color": #scatter-marker-color
+            }
+    }],
+    {margin: {t: 0}});
 
     let new_sample = math.ifft(result);
 
     // convert to mono
     for (let i= 0; i < new_sample.length; i++) {
         new_sample[i] = new_sample[i].re;
-    }return new_sample;
+    }
+
+    return new_sample;
 
 }
 
+let sample2 = sample_wave(square, 440, 1, SAMPLE_RATE);
+let result = math.fft(sample2);
+let magnitudes = get_magnitudes(result);
 
-// // plot the result
-// let freqs = [];
-// for (let i = 0; i < magnitudes.length / 2; i++) {
-//     freqs.push(i);
-// }
-//
-//
-// let SINE = document.getElementById('sine');
-// Plotly.newPlot( SINE, [{
-// type: 'scatter',
-// x: freqs,
-// y: magnitudes,
-// marker: {         // marker is an object, valid marker keys: #scatter-marker
-//             color: 'rgb(16, 32, 77)' // more about "marker.color": #scatter-marker-color
-//         }
-// }],
-// {margin: {t: 0}});
+// plot the result
+let freqs = [];
+for (let i = 0; i < magnitudes.length; i++) {
+    freqs.push(i);
+}
+
+
+let SINE = document.getElementById('sine');
+Plotly.newPlot( SINE, [{
+type: 'scatter',
+x: freqs,
+y: magnitudes,
+marker: {         // marker is an object, valid marker keys: #scatter-marker
+            color: 'rgb(16, 32, 77)' // more about "marker.color": #scatter-marker-color
+        }
+}],
+{margin: {t: 0}});
+
+let sample3 = sample_wave(square, 622, 1, SAMPLE_RATE);
+let result2 = math.fft(sample3);
+let magnitudes2 = get_magnitudes(result2);
+
+// plot the result
+let freqs2 = [];
+for (let i = 0; i < magnitudes2.length; i++) {
+    freqs2.push(i);
+}
+
+
+let SINE2 = document.getElementById('new_sine');
+Plotly.newPlot( SINE2, [{
+type: 'scatter',
+x: freqs2,
+y: magnitudes2,
+marker: {         // marker is an object, valid marker keys: #scatter-marker
+            color: 'rgb(16, 32, 77)' // more about "marker.color": #scatter-marker-color
+        }
+}],
+{margin: {t: 0}});
+
+
 
 
 function playMonoSample(samples, sampleRate) {
@@ -177,7 +211,7 @@ function playMonoSample(samples, sampleRate) {
 }
 
 function playSine() {
-    playMonoSample(sample, SAMPLE_RATE);
+    playMonoSample(sample2, SAMPLE_RATE);
 }
 
 function playInverse() {
@@ -203,12 +237,12 @@ async function loadAndDecodeMP3(filePath) {
 function init() {
     const filename = 'assets/audio/c.mp3';
     loadAndDecodeMP3(filename).then((buffer) => {
-        sample = buffer.getChannelData(0);
-        // convert to array
-        sample = Array.from(sample);
-
-
-        console.log(sample);
-        inverse = pitch_shift(sample, 559 * 2 + 559 / 2);
+        // sample = buffer.getChannelData(0);
+        // // convert to array
+        // sample = Array.from(sample);
+        //
+        //
+        // console.log(sample);
+        // inverse = pitch_shift(sample2, 622);
     });
 }

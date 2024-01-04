@@ -30,3 +30,18 @@ $(document).ready(function(){
       	} 
     });
 });
+
+function sendEmail() {
+	// use mailto: to open default email client
+
+	// get email address from email
+	let title = document.getElementById("title").value;
+	let message = document.getElementById("message").value;
+
+	// send email
+	window.open(`mailto:
+		${'kingarthurdavis78@gmail.com'}
+		?subject=${title}
+		&body=${message}
+	`);
+}
