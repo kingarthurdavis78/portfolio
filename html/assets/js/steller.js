@@ -13,10 +13,10 @@
 */
 
 // smooth scroll
-$(document).ready(function(){
-	$(".nav-link").on('click', function(event) {
+$(document).ready(function () {
+	$(".nav-link").on('click', function (event) {
 
-    	if (this.hash !== "") {
+		if (this.hash !== "") {
 
 			event.preventDefault();
 
@@ -24,11 +24,11 @@ $(document).ready(function(){
 
 			$('html, body').animate({
 				scrollTop: $(hash).offset().top
-			}, 700, function(){
+			}, 700, function () {
 				window.location.hash = hash;
 			});
-      	} 
-    });
+		}
+	});
 });
 
 function sendEmail() {
@@ -44,4 +44,16 @@ function sendEmail() {
 		?subject=${title}
 		&body=${message}
 	`);
+
+}
+let video = document.getElementById("piVideo");
+
+// Set the playback speed (e.g., 1.5 for 1.5x speed)
+video.playbackRate = 16.0;
+
+video = document.getElementById("compressionVideo");
+video.playbackRate = 16.0;
+
+function downloadResume() {
+	window.open('assets/resume.pdf');
 }
