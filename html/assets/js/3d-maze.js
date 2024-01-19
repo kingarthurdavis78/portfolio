@@ -6,7 +6,7 @@ const width_3d = canvas_3d.width;
 const height_3d = canvas_3d.height;
 
 
-let mapName = 'maze';
+let mapName = 'circle';
 let map = [];
 
 let stop = false;
