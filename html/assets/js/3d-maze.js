@@ -343,6 +343,10 @@ function changeMap() {
     ctx_2d.fillRect(0, 0, width_2d, height_2d);
     ctx_3d.fillStyle = 'black';
     ctx_3d.fillRect(0, 0, width_3d, height_3d);
+
+    // clear path
+    path = [];
+
     fetch('assets/maps/' + mapName + '.json').then(response => response.json()).then(async data => {
         map = data;
         ctx_3d.fillStyle = 'white';
